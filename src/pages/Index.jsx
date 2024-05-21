@@ -3,25 +3,25 @@ import { Container, VStack, HStack, Text, Table, Thead, Tbody, Tr, Th, Td, Selec
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 const sampleData = [
-  { id: 1, name: "John Doe", age: 28, email: "john@example.com", businessConcept: "Customer" },
-  { id: 2, name: "Jane Smith", age: 34, email: "jane@example.com", businessConcept: "Customer" },
-  { id: 3, name: "Acme Corp", age: null, email: "contact@acme.com", businessConcept: "Vendor" },
+  { id: 1, productName: "Laptop", productDescription: "High-end gaming laptop", price: 1500, purchaseDateTime: "2024-05-20T14:48:00.000Z", skuID: "LAP123", productCategory: "Electronics", customerAction: "bought product" },
+  { id: 2, productName: "Headphones", productDescription: "Noise-cancelling headphones", price: 200, purchaseDateTime: "2024-05-19T10:30:00.000Z", skuID: "HEAD456", productCategory: "Electronics", customerAction: "bought product" },
+  { id: 3, productName: "Coffee Maker", productDescription: "Automatic coffee maker", price: 100, purchaseDateTime: "2024-05-18T08:15:00.000Z", skuID: "COF789", productCategory: "Home Appliances", customerAction: "bought product" },
 ];
 
-const businessConcepts = ["Customer", "Vendor", "Employee", "Product"];
+const customerActions = ["bought product"];
 
 const Index = () => {
   const [data, setData] = useState(sampleData);
 
-  const handleConceptChange = (id, newConcept) => {
-    const updatedData = data.map((item) => (item.id === id ? { ...item, businessConcept: newConcept } : item));
+  const handleActionChange = (id, newAction) => {
+    const updatedData = data.map((item) => (item.id === id ? { ...item, customerAction: newAction } : item));
     setData(updatedData);
   };
 
   const getSummaryMetrics = () => {
     const totalEntries = data.length;
     const conceptCounts = data.reduce((acc, item) => {
-      acc[item.businessConcept] = (acc[item.businessConcept] || 0) + 1;
+      acc[item.customerAction] = (acc[item.customerAction] || 0) + 1;
       return acc;
     }, {});
 
@@ -40,10 +40,13 @@ const Index = () => {
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>Name</Th>
-              <Th>Age</Th>
-              <Th>Email</Th>
-              <Th>Business Concept</Th>
+              <Th>Product Name</Th>
+              <Th>Product Description</Th>
+              <Th>Price</Th>
+              <Th>Purchase Date Time</Th>
+              <Th>SKU ID</Th>
+              <Th>Product Category</Th>
+              <Th>Customer Action</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -51,14 +54,17 @@ const Index = () => {
             {data.map((item) => (
               <Tr key={item.id}>
                 <Td>{item.id}</Td>
-                <Td>{item.name}</Td>
-                <Td>{item.age}</Td>
-                <Td>{item.email}</Td>
+                <Td>{item.productName}</Td>
+                <Td>{item.productDescription}</Td>
+                <Td>{item.price}</Td>
+                <Td>{new Date(item.purchaseDateTime).toLocaleString()}</Td>
+                <Td>{item.skuID}</Td>
+                <Td>{item.productCategory}</Td>
                 <Td>
-                  <Select value={item.businessConcept} onChange={(e) => handleConceptChange(item.id, e.target.value)}>
-                    {businessConcepts.map((concept) => (
-                      <option key={concept} value={concept}>
-                        {concept}
+                  <Select value={item.customerAction} onChange={(e) => handleActionChange(item.id, e.target.value)}>
+                    {customerActions.map((action) => (
+                      <option key={action} value={action}>
+                        {action}
                       </option>
                     ))}
                   </Select>
